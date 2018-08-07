@@ -1,0 +1,85 @@
+﻿#number of floral buds#
+library(lme4)
+
+botaopcatot=read.table('pcatotal.txt',h=T,dec=',')
+summary(botaopcatot)
+botaopcatot$area=as.factor(botaopcatot$area)
+botaopcatot$grupo=as.factor(botaopcatot$grupo)
+botaopcatot$pca.tot=as.factor(botaopcatot$agre)
+summary(botaopcatot)
+
+m1=glmer(botao~prop.visita+agre+prop.visita:agre+(1|area/grupo),family=poisson,data=botaopcatot)
+m2=glmer(botao~prop.visita+agre+(1|area/grupo),family=poisson,data=botaopcatot)
+m3=glmer(botao~agre+(1|area/grupo),family=poisson,data=botaopcatot)
+nulo=glmer(botao~1+(1|area/grupo),family=poisson,data=botaopcatot)
+
+summary(m1)
+anova(m1,nulo,test='Chisq')
+anova(m1,m3,test='Chisq')
+____________________________________________________________________________________________________________________
+
+# Proportion of buds that become flowers
+
+botao.flor=read.table('pcatotal.txt',h=T,dec=',')
+summary(botao.flor)
+botao.flor$area=as.factor(botao.flor$area)
+botao.flor$grupo=as.factor(botao.flor$grupo)
+botao.flor$pca.tot=as.factor(botao.flor$pca.tot)
+
+ma=lmer(asin(botao.flor)~prop.visita+agre+prop.visita:agre+(1|area/grupo),weight=botao,data=botao.flor)
+plot(ma)
+nulo=lmer(asin(botao.flor)~1+(1|area/grupo),weight=botao,data=botao.flor)
+
+anova(ma,nulo,test='Chisq')
+____________________________________________________________________________________________________________________
+
+# Proportion of flowers that become fruits
+
+ffruto=read.table('ffruto.txt',h=T,dec=',')
+flor.fruto$area=as.factor(flor.fruto$area)
+flor.fruto$grupo=as.factor(flor.fruto$grupo)
+flor.fruto$pca.tot=as.factor(flor.fruto$pca.tot)
+summary(flor.fruto)
+
+mf=lmer(asin(flor.fruto)~prop.visita+agre+prop.visita:agre+(1|area/grupo),weight=flor,data=ffruto)
+plt(mf)
+summary(mf)
+nulob=lmer(asin(flor.fruto)~1+(1|area/grupo),weight=flor,data=ffruto)
+anova(mf,nulob,test='Chisq')
+
+____________________________________________________________________________________________________________________
+
+# Proportion of rippened fruits
+
+frutofruto=read.table('frutofruto.txt',h=T,dec=',')
+frutofruto$area=as.factor(frutofruto$area)
+frutofruto$grupo=as.factor(frutofruto$grupo)
+
+summary(fruto.fruto)
+
+mk=lmer(asin(fruto.fruto)~prop.visita+agre+prop.visita:agre+(1|area/grupo),weight=fruto,data=frutofruto)
+plot(mk)
+nuloc=lmer(asin(fruto.fruto)~1+(1|area/grupo),weight=fruto,data=frutofruto)
+
+anova(mk,nuloc,test='Chisq')
+____________________________________________________________________________________________________________________
+
+# Seed number
+
+sementestot=read.table('semtot.txt',h=T,dec=',')
+sementestot$area=as.factor(sementestot$area)
+sementestot$grupo=as.factor(sementestot$grupo)
+sementestot$pca.tot=as.factor(sementestot$pca.tot)
+summary(sementestotpcatot)
+
+m16=glmer(total.sementes~prop.visita+agre+prop.visita:agre+(1|area/grupo), weights = fruto.vingou,family=poisson,data=sementestot)
+plot(m16)
+m17=glmer(total.sementes~prop.visita+agre+(1|area/grupo), weights=fruto.vingou,family=poisson,data=sementestot)
+nulod=glmer(total.sementes~1+(1|area/grupo),weights= fruto.vingou, family=poisson,data=sementestot)
+
+anova(m16,nulod,test='Chisq')
+anova(m16,m17,test='Chisq')
+summary(m16)
+
+#end
+____________________________________________________________________________________________________________________
